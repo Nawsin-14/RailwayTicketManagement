@@ -4,13 +4,16 @@
 
 
 #include "splash.h" //include the Splash.h file
-
+#include "menu.h"
 
 int main()
 {
 
-    welcomeAnimation();
+    welcomeAnimation(); // Show Welcome Animation
     system("cls");  // clears the screen
+
+    menu(); //Show Menu Options
+
 
     return 0;
 }
