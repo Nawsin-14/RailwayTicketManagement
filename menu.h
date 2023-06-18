@@ -1,3 +1,5 @@
+#include "login.h" // includes the functions of login.h
+
 //Menu and options for user to select
 void menu()
 {
@@ -21,18 +23,25 @@ void menu()
         switch(choice)
         {
         case 1:
-            printf("\n\n\t\t\tNew Registration");
+            system("cls");
+            newUserRegistration();  // function for User Registration, Code in login.h file
+
             break;
         case 2:
-            printf("\n\t\t\tUser Login");
+            system("cls");
+            userLogin();    // function for User Login, Code in login.h file
+
             break;
         case 3:
+            system("cls");
             printf("\n\t\t\tTrain Schedule");
             break;
         case 4:
+            system("cls");
             printf("\n\t\t\tTicket Availability");
             break;
         case 5:
+            system("cls");
             printf("\n\t\t\t5.Admin Login");
             break;
         case 0:
@@ -43,6 +52,5 @@ void menu()
             printf("\n\n\n\t\t\tINVALID INPUT!!! Try again...");
 
         }                                            //Switch Ended
-    }
-    while(choice!=0);                                        //Loop Ended
+    }while(choice!=0);                                        //Loop Ended
 }
