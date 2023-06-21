@@ -45,21 +45,21 @@ void adminLogin(){
             case 1:
 
                 system("cls");
-                printf("\n\t\t\tAdd Train Schedule\n");
+
                 addTrainSchedule();
 
                 break;
 
             case 2:
                 system("cls");
-                printf("\n\t\t\tView Train Schedule\n");
+
                 viewTrainSchedule();
 
                 break;
 
             case 3:
                 system("cls");
-                printf("\n\t\t\tDelete Train Schedule\n");
+
                 deleteTrainSchedule();
 
                 break;
@@ -70,8 +70,7 @@ void adminLogin(){
             exit(1);
             break;
 
-            default:
-                printf("\n\n\n\t\t\tINVALID INPUT!!! Try again...");
+
 
             }
 
@@ -115,7 +114,7 @@ void addTrainSchedule(){
     FILE *fp3;
 
      struct TrainSchedule info;
-
+        char tn[40];
 
        printf("\t\t\t\t=======Add Train Info=======\n\n\n");
        fp3=fopen("trainSchedule.txt","a");
@@ -123,7 +122,7 @@ void addTrainSchedule(){
           printf("\n\t\t\tEnter Train No:");
           scanf("%d",&info.id);
           printf("\n\t\t\tEnter Train Name:");
-          scanf("%s",&info.trainName);
+          scanf("%s",info.trainName);
           printf("\n\t\t\tFrom (Location):");
           scanf("%s",&info.from);
           printf("\n\t\t\tTo (Location):");
@@ -152,6 +151,9 @@ void addTrainSchedule(){
 
 void viewTrainSchedule(){
 
+     printf(" \n");
+    printf("\t\t\t\t=======Train Schedule=======\n\n\n");
+
     FILE *fp;
 
     struct TrainSchedule info;
@@ -165,9 +167,11 @@ void viewTrainSchedule(){
     }
 
         while(fread(&info,sizeof(struct TrainSchedule),1,fp)){
-        printf("\n\tTrain ID \tTrain Name \t\tFrom \t\tTo \tDeparture Time \tArrival Time \tTicket Price \tSeats available");
 
-        printf("\n \t%d \t%[^\n]%*s \t\t%[^\n]%*s \t\t%s \t%s \t%s \t%d \t%d", info.id, info.trainName, info.from, info.to, info.departure, info.arrival, info.price, info.seats);
+        printf("\n\t\t\tTrain ID: %d \n\t\t\tTrain Name: %s \n\t\t\tFrom: %s \n\t\t\tTo: %s \n\t\t\tDeparture Time: %s \n\t\t\tArrival Time: %s \n\t\t\tTicket Price: %d\n\t\t\tSeats available: %d", info.id, info.trainName, info.from, info.to, info.departure, info.arrival, info.price, info.seats);
+
+
+        printf("\n\t\t\t\_________________________\n");
 
          }
         fclose(fp);
@@ -177,5 +181,67 @@ void viewTrainSchedule(){
 
 void deleteTrainSchedule(){
 
+    printf("\t\t\t\t=======DELETE Train Schedule=======\n\n\n");
+
+    struct TrainSchedule info;
+    FILE *fp, *fp1;
+
+
+    int train_id,found=0;
+    char ans;
+
+    fp=fopen("trainSchedule.txt","r");
+    fp1=fopen("temp.txt","w");
+    printf("\t\t\t\tEnter Train ID to delete : ");
+    scanf("%d",&train_id);
+    if(fp==NULL){
+       fprintf(stderr,"can't open file\n");
+       exit(0);
+    }
+
+    while(fread(&info,sizeof(struct TrainSchedule),1,fp)){
+
+        if(info.id == train_id){
+
+            printf("\n\t\t\tTrain ID: %d \n\t\t\tTrain Name: %s \n\t\t\tFrom: %s \n\t\t\tTo: %s \n\t\t\tDeparture Time: %s \n\t\t\tArrival Time: %s \n\t\t\tTicket Price: %d\n\t\t\tSeats available: %d", info.id, info.trainName, info.from, info.to, info.departure, info.arrival, info.price, info.seats);
+
+
+            printf("\n\t\t\t\_________________________\n");
+
+            printf("\t\t\t\tEnter y/Y if you want to delete : ");
+            scanf(" %c",&ans);
+
+            if (ans =='y' || ans =='Y'){
+                found=1;
+            }else{
+                printf("\n\n\n\t\t\t\tNot Deleted\n\n\n\n\n");
+                exit(0);
+            }
+
+
+        }else{
+
+           fwrite(&info,sizeof(struct TrainSchedule),1,fp1); // when Id do not match, copy from main file to temp fie. when match that will not be copied. all data except that given id will be stored
+        }
+
+    }
+
+     fclose(fp);
+     fclose(fp1);
+
+    if(!found){
+          printf("\n\t\t\t\tTrain Schedule not found\n");
+    }
+
+    if(found){
+    remove("trainSchedule.txt");
+
+    rename("temp.txt","trainSchedule.txt");
+
+    printf("\n\t\t\t\tRecord deleted succesfully\n");
+
+    }
+
+  getch();
 
 }

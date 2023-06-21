@@ -35,7 +35,7 @@ void menu()
             break;
         case 3:
             system("cls");
-            printf("\n\t\t\tTrain Schedule");
+            viewTrainSchedule();
             break;
         case 4:
             system("cls");
