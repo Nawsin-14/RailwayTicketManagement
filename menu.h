@@ -1,4 +1,5 @@
 #include "login.h" // includes the functions of login.h
+#include "admin.h" // includes the functions of admin.h
 
 //Menu and options for user to select
 void menu()
@@ -42,12 +43,9 @@ void menu()
             break;
         case 5:
             system("cls");
-            printf("\n\t\t\t5.Admin Login");
+            adminLogin();
             break;
-        case 0:
-            printf("\n\n\n\t\t\t\tThank you!!!\n\n\n\n\n");
-            exit(1);
-            break;
+
         default:
             printf("\n\n\n\t\t\tINVALID INPUT!!! Try again...");
 

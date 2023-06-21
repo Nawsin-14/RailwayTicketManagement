@@ -1,3 +1,5 @@
+
+
 void newUserRegistration();
 void userLogin();
 void userProfile();
@@ -42,7 +44,8 @@ void newUserRegistration(){
           scanf("%s",&info.lastName);
 
           printf("\n\t\t\tEnter Your Address:");
-          scanf("%s",&info.address);
+
+          scanf("%s",&info.address); //take comma as input ,  C scanf doesn’t consider the comma(,) as a delimiter for the specifier “%s.
 
           printf("\n\t\t\tEnter Your Phone Number:");
           scanf("%s",&info.phone);
@@ -98,7 +101,7 @@ void userLogin(){
         system("cls");
         printf("\n\t\t\tLogin Successful\n");
         printf("\n\t\t\t______________________________________\n");
-        printf("\n\t\t\tWelcome %s %s %s" , info.firstName, info.lastName);
+        printf("\n\t\t\tWelcome %s %s" , info.firstName, info.lastName);
         printf("\n");
 
 
@@ -111,7 +114,7 @@ void userLogin(){
                 printf("\n\t\t\t2.Check Ticket Availability");
                 printf("\n\t\t\t3.Ticket Booking");
                 printf("\n\t\t\t4.Your Tickets");
-                printf("\nt\t\t\t0.Go Back\n");
+                printf("\nt\t\t\t0.Logout\n");
 
                 printf("\n\t\t\t");
 

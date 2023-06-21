@@ -10,7 +10,7 @@
 int main()
 {
 
-    welcomeAnimation(); // Show Welcome Animation
+    //welcomeAnimation(); // Show Welcome Animation
 
     system("cls");  // clears the screen
 
@@ -21,7 +21,4 @@ int main()
 
     return 0;
 }
-
-
-
 
