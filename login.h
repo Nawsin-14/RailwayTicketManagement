@@ -114,7 +114,7 @@ void userLogin(){
                 printf("\n\t\t\t2.Check Ticket Availability");
                 printf("\n\t\t\t3.Ticket Booking");
                 printf("\n\t\t\t4.Your Tickets");
-                printf("\nt\t\t\t0.Logout\n");
+                printf("\n\t\t\t0.Logout\n");
 
                 printf("\n\t\t\t");
 
@@ -138,16 +138,18 @@ void userLogin(){
 
             case 2:
                 system("cls");
-                printf("\n\t\t\tCheck Ticket Availability");
+                userCheckTicketAvailability();
+                //printf("\n\t\t\tCheck Ticket Availability");
 
                 break;
             case 3:
                 system("cls");
-                printf("\n\t\t\tTicket Booking");
+                ticketBooking();
+                //printf("\n\t\t\tTicket Booking");
                 break;
             case 4:
                 system("cls");
-                printf("\n\t\t\tYour Tickets");
+                //printf("\n\t\t\tYour Tickets");
                 break;
 
             case 0:
@@ -179,3 +181,179 @@ void userLogin(){
 }
 
 
+struct TrainSchedule2{
+
+    int id;
+    char trainName[40];
+    char from[40];
+    char to[40];
+    char departure[40];
+    char arrival[40];
+    int price;
+    int seats;
+
+};
+
+
+void userCheckTicketAvailability(){
+
+     printf(" \n");
+    printf("\t\t\t\t=======Train Schedule and Ticket Availability=======\n\n\n");
+
+    FILE *fp;
+
+    struct TrainSchedule2 info;
+    fp=fopen("trainSchedule.txt","r");
+
+
+    if(fp==NULL){
+
+        fprintf(stderr,"Can't open file\n");
+        exit(0);
+    }
+
+        while(fread(&info,sizeof(struct TrainSchedule2),1,fp)){
+
+        printf("\n\t\t\tTrain ID: %d \n\t\t\tTrain Name: %s \n\t\t\tFrom: %s \n\t\t\tTo: %s \n\t\t\tDeparture Time: %s \n\t\t\tArrival Time: %s \n\t\t\tTicket Price: %d\n\t\t\tSeats available: %d", info.id, info.trainName, info.from, info.to, info.departure, info.arrival, info.price, info.seats);
+
+
+        printf("\n\t\t\t\_________________________\n");
+
+         }
+        fclose(fp);
+
+
+}
+
+void ticketBooking(){
+
+    userCheckTicketAvailability();
+
+    int trainid, howManyTickets;
+    int foundID=0;
+    char ans;
+
+    printf("\n\t\t\tTo book your ticket, Enter Tarin ID: ");
+    scanf("%d",&trainid);
+
+
+    FILE *fp;
+
+    struct TrainSchedule2 info;
+    fp=fopen("trainSchedule.txt","r");
+
+
+    if(fp==NULL){
+
+        fprintf(stderr,"Can't open file\n");
+        exit(0);
+    }
+
+        while(fread(&info,sizeof(struct TrainSchedule2),1,fp)){
+
+            if(info.id == trainid) {
+
+                if (info.seats >= howManyTickets ) {
+
+                    foundID=1;
+                    printf("\n\t\t\tHow many Tickets would you like to Book: ");
+                    scanf(" %d",&howManyTickets);
+
+                    int totalPrice= howManyTickets * info.price;
+
+                    printf("\n\t\t\tTotal Price for %d ticket is BDT: %d ",howManyTickets, totalPrice);
+
+                    printf("\n\t\t\tEnter y/Y if you want to Confirm : ");
+                    scanf(" %c",&ans);
+
+                    if (ans =='y' || ans =='Y'){
+
+                        int remainingTickets = info.seats - howManyTickets;
+                        fclose(fp); //very important to close file here, otherwise no of ticket will not be updated
+                        updateNoOfTickets(trainid, remainingTickets);
+
+
+                    }else{
+                        printf("\n\n\n\t\t\t\tBooking Cancelled\n\n\n\n\n");
+
+                    }
+
+
+                }else {
+                    printf("\n\t\t\tTicket Not Available ");
+                }
+            }else {
+
+            }
+
+
+    }
+
+    if(!foundID){
+          printf("\n\t\t\t\tInvalid Train ID, try again\n");
+    }
+
+
+    fclose(fp);
+    getch();
+
+
+}
+
+
+void updateNoOfTickets(int tid, int remainTickets){
+
+
+
+
+
+
+    struct TrainSchedule2 info;
+    FILE *fp, *fp1;
+
+
+    int found=0;
+
+
+    fp=fopen("trainSchedule.txt","r");
+    fp1=fopen("temp.txt","w");
+
+
+    if(fp==NULL){
+       fprintf(stderr,"can't open file\n");
+       exit(0);
+    }
+
+    while(fread(&info,sizeof(struct TrainSchedule2),1,fp)){
+
+        if(info.id == tid){
+
+         found=1;
+         info.seats = remainTickets;
+
+        fwrite(&info,sizeof(struct TrainSchedule2),1,fp1);
+
+        }else{
+
+           fwrite(&info,sizeof(struct TrainSchedule2),1,fp1); // when Id do not match, copy from main file to temp fie. when match that will not be copied. all data except that given id will be stored
+        }
+
+    }
+
+     fclose(fp);
+     fclose(fp1);
+
+    if(found){
+     remove("trainSchedule.txt");
+
+     rename("temp.txt","trainSchedule.txt");
+
+    printf("\n\t\t\t\tBooking Updated Succesfully\n");
+
+    }
+
+  getch();
+
+
+
+}
