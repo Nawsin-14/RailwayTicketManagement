@@ -136,6 +136,7 @@ void userLogin(){
                 printf("\n\n\t\t\tLast Name: %s", info.lastName);
                 printf("\n\n\t\t\tAddress: %s", info.address);
                 printf("\n\n\t\t\tPhone: %s", info.phone);
+                printf("\n\t\t\t______________________________________\n");
 
                 break;
 
@@ -152,6 +153,7 @@ void userLogin(){
                 break;
             case 4:
                 system("cls");
+                yourTickets();
                 //printf("\n\t\t\tYour Tickets");
                 break;
 
@@ -284,6 +286,7 @@ void ticketBooking(){
 
                         updateNoOfTickets(trainid, remainingTickets, howManyTickets, date); // Update the file for ticket booking and no of tickets available will be changed
 
+                        updateMyTickets(howManyTickets, date, info.trainName, info.from, info.to, totalPrice); //For Updating "Your Ticket" ticket purchased by specific user
 
                     }else{
                         printf("\n\n\n\t\t\t\tBooking Cancelled\n\n\n\n\n");
@@ -314,10 +317,6 @@ void ticketBooking(){
 
 
 void updateNoOfTickets(int tid, int remainTickets, int howManyTickets, char dates[40]){
-
-
-
-
 
 
     struct TrainSchedule2 info;
@@ -366,7 +365,7 @@ void updateNoOfTickets(int tid, int remainTickets, int howManyTickets, char date
 
     system( "image_02.jpg" );
 
-    updateMyTickets(howManyTickets, dates); //For Updating "Your Ticket" ticket purchased by specific user
+
 
 
     }
@@ -381,14 +380,90 @@ void updateNoOfTickets(int tid, int remainTickets, int howManyTickets, char date
 struct purchasedTicket{
 
     char userName[20];
-    char date[20];
+    char date[40];
+    char trainName[40];
+    char from[40];
+    char to[40];
+    int price;
     int ticketsCount;
 
 
 };
 
-void updateMyTickets(int howManyTickets, char dates[40]){
+void updateMyTickets(int howManyTickets, char dates[40], char trainName[40], char from[40], char to[40], int price){
 
    // printf("\n\t\t\t%s have purchased %d tickets for %s",whoLoggedin, howManyTickets, dates);
+
+   FILE *fp3;
+
+     struct purchasedTicket info;
+        char tn[40];
+
+
+          fp3=fopen("purchasedTickets.txt","a");
+
+          strcpy(info.userName, whoLoggedin);  //String Copy
+          strcpy(info.date, dates);
+          strcpy(info.trainName, trainName);
+          strcpy(info.from, from);
+          strcpy(info.to, to);
+          info.ticketsCount = howManyTickets;
+          info.price = price;
+
+
+    if(fp3==NULL){
+        fprintf(stderr,"Can't open file");
+    }else{
+
+    }
+
+    fwrite(&info, sizeof(struct purchasedTicket), 1, fp3);
+    fclose(fp3);
+
+}
+
+
+// It will show purchaed tickets of logged in user
+
+void yourTickets(){
+
+    int foundID =0;
+
+    printf(" \n");
+    printf("\t\t\t\t=======Order History=======\n\n\n");
+
+
+    struct purchasedTicket info;
+    FILE *fp;
+
+
+
+    fp=fopen("purchasedTickets.txt","r");
+
+    int counting = 1;
+
+
+    while(fread(&info,sizeof(struct purchasedTicket),1,fp)){
+
+
+
+        if(strcmp(whoLoggedin,info.userName)==0){  // String Comparison using strcmp
+
+        foundID = 1;
+
+        printf("\n\t\t\t%d. Bought %d ticket, Travel date: %s , Train Name:  %s, From %s to %s, Total Price: %d: " , counting, info.ticketsCount, info.date, info.trainName, info.from, info.to, info.price);
+        printf("\n");
+        counting = counting+1;
+
+        }
+
+    }
+
+      if(!foundID){
+          printf("\n\t\t\t\tYou have not Purchased any ticket yet.\n");
+        }
+
+    fclose(fp);
+    getch();
 
 }
