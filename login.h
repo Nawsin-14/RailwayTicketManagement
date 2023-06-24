@@ -16,6 +16,8 @@ struct login{
 
 };
 
+char whoLoggedin [20];
+
 void newUserRegistration(){
 
     system("cls");
@@ -104,7 +106,8 @@ void userLogin(){
         printf("\n\t\t\tWelcome %s %s" , info.firstName, info.lastName);
         printf("\n");
 
-
+        strcpy(whoLoggedin , info.userName);  //String Copy
+        //whoLoggedin = info.userName;
 
         int select = 0;
 
@@ -230,11 +233,15 @@ void ticketBooking(){
     userCheckTicketAvailability();
 
     int trainid, howManyTickets;
+    char date[40];
     int foundID=0;
     char ans;
 
     printf("\n\t\t\tTo book your ticket, Enter Tarin ID: ");
     scanf("%d",&trainid);
+
+    printf("\n\t\t\tHow many Tickets would you like to Book: ");
+    scanf(" %d",&howManyTickets);
 
 
     FILE *fp;
@@ -253,11 +260,15 @@ void ticketBooking(){
 
             if(info.id == trainid) {
 
+                    foundID=1;
+
                 if (info.seats >= howManyTickets ) {
 
-                    foundID=1;
-                    printf("\n\t\t\tHow many Tickets would you like to Book: ");
-                    scanf(" %d",&howManyTickets);
+
+
+
+                    printf("\n\t\t\tEnter date of travel in this format DD/MM/YEAR: ");
+                    scanf(" %s",&date);
 
                     int totalPrice= howManyTickets * info.price;
 
@@ -270,7 +281,8 @@ void ticketBooking(){
 
                         int remainingTickets = info.seats - howManyTickets;
                         fclose(fp); //very important to close file here, otherwise no of ticket will not be updated
-                        updateNoOfTickets(trainid, remainingTickets);
+
+                        updateNoOfTickets(trainid, remainingTickets, howManyTickets, date); // Update the file for ticket booking and no of tickets available will be changed
 
 
                     }else{
@@ -301,7 +313,7 @@ void ticketBooking(){
 }
 
 
-void updateNoOfTickets(int tid, int remainTickets){
+void updateNoOfTickets(int tid, int remainTickets, int howManyTickets, char dates[40]){
 
 
 
@@ -348,12 +360,35 @@ void updateNoOfTickets(int tid, int remainTickets){
 
      rename("temp.txt","trainSchedule.txt");
 
-    printf("\n\t\t\t\tBooking Updated Succesfully\n");
+    printf("\n\t\t\tBooking Updated Succesfully\n");
+
+    printf("\n\t\t\t%s have purchased %d tickets for %s",whoLoggedin, howManyTickets, dates);
+
+    system( "image_02.jpg" );
+
+    updateMyTickets(howManyTickets, dates); //For Updating "Your Ticket" ticket purchased by specific user
+
 
     }
 
-  getch();
 
 
+}
+
+
+// For Updating "Your Ricket" ticket purchased by specific user
+
+struct purchasedTicket{
+
+    char userName[20];
+    char date[20];
+    int ticketsCount;
+
+
+};
+
+void updateMyTickets(int howManyTickets, char dates[40]){
+
+   // printf("\n\t\t\t%s have purchased %d tickets for %s",whoLoggedin, howManyTickets, dates);
 
 }

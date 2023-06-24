@@ -20,6 +20,7 @@ void welcomeAnimation()
 
     }
 
+    system( "image_01.jpg" );
 
     fclose(fptr); // Close the file
 

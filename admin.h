@@ -245,3 +245,36 @@ void deleteTrainSchedule(){
   getch();
 
 }
+
+void ticketAvailability(){
+
+
+    printf("\t\t\t\t=======Ticket Availability=======\n\n\n");
+
+
+    FILE *fp;
+
+    struct TrainSchedule info;
+    fp=fopen("trainSchedule.txt","r");
+
+
+    if(fp==NULL){
+
+        fprintf(stderr,"Can't open file\n");
+        exit(0);
+    }
+
+        while(fread(&info,sizeof(struct TrainSchedule),1,fp)){
+
+        printf("\n\tTrain ID: %d \tTrain Name: %s \tFrom: %s \tTo: %s \tDeparture Time: %s \tArrival Time: %s \tSeats available: %d", info.id, info.trainName, info.from, info.to, info.departure, info.arrival, info.seats);
+
+
+        printf("\n");
+
+         }
+        fclose(fp);
+        getch();
+
+
+
+}

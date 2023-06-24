@@ -1,19 +1,19 @@
 # depslib dependency file v1.0
-1687387752 source:c:\users\workspace\documents\codeblock\railwayticketmanagement\main.c
+1687593795 source:c:\users\workspace\documents\codeblock\railwayticketmanagement\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"splash.h"
 	"menu.h"
 
-1687042980 c:\users\workspace\documents\codeblock\railwayticketmanagement\splash.h
+1687593692 c:\users\workspace\documents\codeblock\railwayticketmanagement\splash.h
 	<dos.h>
 
-1687371653 c:\users\workspace\documents\codeblock\railwayticketmanagement\menu.h
+1687592239 c:\users\workspace\documents\codeblock\railwayticketmanagement\menu.h
 	"login.h"
 	"admin.h"
 
-1687504131 c:\users\workspace\documents\codeblock\railwayticketmanagement\login.h
+1687598676 c:\users\workspace\documents\codeblock\railwayticketmanagement\login.h
 
-1687377566 c:\users\workspace\documents\codeblock\railwayticketmanagement\admin.h
+1687593692 c:\users\workspace\documents\codeblock\railwayticketmanagement\admin.h
 

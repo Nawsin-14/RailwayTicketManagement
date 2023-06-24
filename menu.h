@@ -39,7 +39,8 @@ void menu()
             break;
         case 4:
             system("cls");
-            printf("\n\t\t\tTicket Availability");
+            ticketAvailability();
+
             break;
         case 5:
             system("cls");
